@@ -56,7 +56,7 @@ binding *append(binding *fstHead, binding *sndHead)
 
   temp->next = sndHead;
   
-  return *fstHead;
+  return fstHead;
 }
 
 #endif

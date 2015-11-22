@@ -69,8 +69,6 @@ binding *extend_env_args(char params[64][64], void* args[64], binding *clo_env, 
     else
       break;
   }
-  
-  append();
 }
 
 // evaluates an ExprC into a Value
@@ -158,8 +156,8 @@ int main(char** args) {
     "2.000") ? "fail" : "pass");
   printf("%s \n", strcmp(serialize(interp(alloc_binopC("+", alloc_numC(5), alloc_numC(3)), NULL)),
     "8.000") ? "fail" : "pass");
-  printf("%s \n", strcmp(serialize(interp(alloc_binopC("/", alloc_numC(15), alloc_numC(3)), NULL))),
-    "3.000") ? "fail" : "pass");
+  printf("%s \n", strcmp(serialize(interp(alloc_binopC("/", alloc_numC(15), alloc_numC(3)), NULL)),
+    "5.000") ? "fail" : "pass");
   printf("%s \n", strcmp(serialize(interp(alloc_numC(2), NULL)),
     "2.000") ? "fail" : "pass");
   
