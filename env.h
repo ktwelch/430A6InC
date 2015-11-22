@@ -38,9 +38,11 @@ void *look_up(char name[64], binding *env)
     }
     else
     {
-      return NULL;
+      env = env->next;
     }
   }
+
+  return NULL;
 }
 
 #endif
