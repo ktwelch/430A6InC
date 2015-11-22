@@ -97,8 +97,40 @@ void* interp(void* expr) { // add environment support
   }
 }
 
+char *serialize(void *expr) {
+  void *result = interp(expr);
+  char *string;
+  float num_result;
+  int bool_result;
+
+  string = malloc(16);
+  switch (*(int*)result) {
+    case 0:
+      num_result = ((numV*)result)->num;
+      snprintf(string, 16, "%.3f\n", num_result);
+      return string;
+    case 1:
+      bool_result = ((boolV*)result)->bool;
+      return bool_result ? "true" : "false";
+    case 2:
+      return "<#procedure>";
+  }
+}
+
 int main(char** args) {
-  printf("Hello world.\n");
+  char *string;
+
+  //tests
+  string = serialize(interp(alloc_binopC("+", alloc_numC(5), alloc_numC(3))));
+  printf(string);
+  
   return 0;
 }
+
+
+
+
+
+
+
 
