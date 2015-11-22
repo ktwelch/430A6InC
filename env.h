@@ -45,7 +45,7 @@ void *look_up(char name[64], binding *env)
   return NULL;
 }
 
-void *append(binding *fstHead, binding *sndHead)
+binding *append(binding *fstHead, binding *sndHead)
 {
   binding *temp = fstHead;
 
