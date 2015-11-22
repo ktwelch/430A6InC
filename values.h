@@ -3,10 +3,10 @@
 
 typedef struct numV {
   int type; // 0
-  int num;
+  float num;
 } numV;
 
-void* alloc_numV(int num) {
+void* alloc_numV(float num) {
   numV *result = malloc(sizeof(numV));
   result->type = 0;
   result->num = num;
