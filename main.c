@@ -1,6 +1,8 @@
 #include "AST.h"
 #include <stdio.h>
 #include "values.h"
+#include "env.h"
+#include "interp.h"
 
 // left and right are Values, returns a Value
 void* eval_binop(char* symbol, void* left_void, void* right_void) {
@@ -56,14 +58,20 @@ void* eval_binop(char* symbol, void* left_void, void* right_void) {
   }
 }
 
+binding *extend_env_args(char params[64][64], void* args[64], binding *clo_env, binding *top_env) {
+  
+  return NULL;
+}
+
 // evaluates an ExprC into a Value
-void* interp(void* expr) { // add environment support
+void* interp(void* expr, binding* env) {
   lamC *lamc;
   binopC *binopc;
   appC *appc;
 
   void *left_val;
   void *right_val;
+  void *temp;
 
   switch(*(int*)expr) {
     case 0:  // numC
@@ -78,18 +86,22 @@ void* interp(void* expr) { // add environment support
     case 3:  // ifC
       return alloc_numV(0);
 
-    case 4:  // lamiC
+    case 4:  // lamC
       lamc = (lamC*)expr;  // need environments
       return NULL;
       
     case 5:  // binopC
       binopc = (binopC*)expr;
-      left_val = interp(binopc->left);
-      right_val = interp(binopc->right);
+      left_val = interp(binopc->left, env);
+      right_val = interp(binopc->right, env);
       return eval_binop(binopc->op, left_val, right_val);
       
     case 6:  // appC
       appc = (appC*)expr;  // need environments
+      temp = interp(appc->fun, env);  // hoping is cloV
+      if (*(int*)temp == 2) {
+        return interp(((cloV*)temp)->body, extend_env_args(((cloV*)temp)->params, appc->args, ((cloV*)temp)->env, env));  // ASSUMING length of params == length of args
+      }
       return NULL;
      
     default:
@@ -97,13 +109,17 @@ void* interp(void* expr) { // add environment support
   }
 }
 
-char *serialize(void *expr) {
-  void *result = interp(expr);
+char *serialize(void *result) {
   char *string;
   float num_result;
   int bool_result;
 
   string = malloc(16);
+
+  if (!result) {
+    return "Error detected.\n";
+  }
+
   switch (*(int*)result) {
     case 0:
       num_result = ((numV*)result)->num;
@@ -121,7 +137,7 @@ int main(char** args) {
   char *string;
 
   //tests
-  string = serialize(interp(alloc_binopC("+", alloc_numC(5), alloc_numC(3))));
+  string = serialize(interp(alloc_binopC("+", alloc_numC(5), alloc_numC(3)), new_binding()));
   printf(string);
   
   return 0;

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include "env.h"
 
 typedef struct numV {
   int type; // 0
@@ -31,7 +32,7 @@ typedef struct cloV {
   int type; // 2
   char params[64][64];
   void* body; // ExprC
-  // environment
+  binding *env;
 } cloV;
 
 void* alloc_cloV(char** params, void* body) {
