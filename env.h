@@ -45,4 +45,18 @@ void *look_up(char name[64], binding *env)
   return NULL;
 }
 
+void *append(binding *fstHead, binding *sndHead)
+{
+  binding *temp = fstHead;
+
+  while(temp->next)
+  {
+    temp = temp->next;
+  }
+
+  temp->next = sndHead;
+  
+  return *fstHead;
+}
+
 #endif
