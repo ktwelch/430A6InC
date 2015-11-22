@@ -59,8 +59,18 @@ void* eval_binop(char* symbol, void* left_void, void* right_void) {
 }
 
 binding *extend_env_args(char params[64][64], void* args[64], binding *clo_env, binding *top_env) {
+  int i;
+  binding *new_env = new_binding();
+
+  for (i = 0; i < 64; i++) {
+    if (args[i] != NULL) {
+      add_binding(&new_env, params[i], args[i]);
+    }
+    else
+      break;
+  }
   
-  return NULL;
+  append();
 }
 
 // evaluates an ExprC into a Value
