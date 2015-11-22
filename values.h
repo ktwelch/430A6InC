@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct numV {
   int type; // 0
